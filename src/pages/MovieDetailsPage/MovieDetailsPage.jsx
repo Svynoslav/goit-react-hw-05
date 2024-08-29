@@ -26,7 +26,7 @@ export default function MovieDetailsPage() {
   }, [movieId]);
 
   const location = useLocation();
-  const backLinkRef = location.state?.from || "/movies";
+  const backLinkRef = useRef(location.state?.from || "/movies");
 
   return (
     <div>
@@ -36,7 +36,7 @@ export default function MovieDetailsPage() {
           <NotFoundPage />
         ) : (
           <div>
-            <NavLink to={backLinkRef}>Back</NavLink>
+            <NavLink to={backLinkRef.current}>Back</NavLink>
             {mov.poster_path && (
               <img
                 src={`https://image.tmdb.org/t/p/w200/${mov.poster_path}`}
@@ -55,8 +55,12 @@ export default function MovieDetailsPage() {
                 })}
             </ul>
             <div>
-              <NavLink to="cast">Cast</NavLink>
-              <NavLink to="reviews">Reviews</NavLink>
+              <NavLink to="cast" state={{ from: backLinkRef.current }}>
+                Cast
+              </NavLink>
+              <NavLink to="reviews" state={{ from: backLinkRef.current }}>
+                Reviews
+              </NavLink>
             </div>
             <Outlet />
           </div>
